@@ -1,0 +1,2 @@
+com.tc.trinity.core.config.SpringContextConfiguration
+com.tc.trinity.core.config.LogbackConfiguration

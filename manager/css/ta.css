@@ -1,0 +1,1422 @@
+
+.red {
+    color: #FF0000;
+}
+.fl {
+    float: left;
+}
+html {
+    background-color: #FCFCFC;
+}
+#header {
+    background: url("../images/head_bg.png") repeat scroll 0 0 #405069;
+}
+#header .titler {
+    border-bottom: 1px solid #31415B;
+    height: 42px;
+    line-height: 42px;
+    padding: 0 20px 0 40px;
+}
+#header .titler .logo {
+    color: #6B778F;
+    width: 300px;
+}
+#header .titler .logo img, #header .titler .logo em, #header .titler .logo span {
+    vertical-align: middle;
+}
+#header .titler .logo span {
+    margin: 0 8px;
+}
+#header .titler .loginbar {
+    background-color: #3E4F69;
+    border: 1px solid #43556C;
+    border-radius: 5px 5px 5px 5px;
+    color: #8C9BB0;
+    float: right;
+    line-height: 23px;
+    margin-top: 8px;
+    padding: 0 8px;
+}
+#header .titler .loginbar a {
+    background-color: #313F59;
+    color: #FFFFFF;
+    display: inline-block;
+    margin: 0 8px;
+    padding: 0 8px;
+    text-decoration: none;
+}
+#header .titler .loginbar a.logout {
+    background-color: #3E4F69;
+    border: medium none;
+    color: #8C9BB0;
+    cursor: pointer;
+    line-height: 23px;
+    margin: 0;
+    padding: 0 5px;
+}
+#header .menu {
+    border-bottom: 3px solid #FC9338;
+    border-top: 1px solid #4E627B;
+}
+#header .menu li {
+    border-right: 1px solid #4E627B;
+    float: left;
+}
+#header .menu li a {
+    background: url("../images/menu.png") no-repeat scroll center 15px rgba(0, 0, 0, 0);
+    border-right: 1px solid #31415B;
+    color: #FFFFFF;
+    display: block;
+    height: 28px;
+    padding-top: 47px;
+    text-align: center;
+    text-decoration: none;
+    width: 120px;
+}
+#header .menu li.sys a {
+    background-position: center -85px;
+}
+#header .menu li.air a {
+    background-position: center -187px;
+}
+#header .menu li.hotel a {
+    background-position: center -285px;
+}
+#header .menu li.money a {
+    background-position: center -382px;
+}
+#header .menu li.psd a {
+    background-position: center -480px;
+}
+#header .menu li.selected a, #header .menu li a:hover {
+    background-color: #344154;
+}
+.grid {
+    overflow: hidden;
+}
+.col-sub {
+    background-color: #EEF9FF;
+}
+.nav-wrap {
+    border-right: 1px solid #C6D9E8;
+}
+.nav {
+    background-color: #EEF9FF;
+    border-right: 4px solid #E5F3FC;
+    margin-bottom: -9999px;
+    padding-bottom: 9999px;
+}
+.nav h3 {
+    color: #333333;
+    padding: 20px 0 10px 35px;
+}
+.nav li a {
+    color: #666666;
+    display: block;
+    line-height: 28px;
+    padding-left: 35px;
+    text-decoration: none;
+}
+.nav li.selected a, .nav li a:hover {
+    background-color: #E5F3FE;
+    border-left: 4px solid #FC9338;
+    color: #999999;
+    padding-left: 31px;
+}
+.mainCon {
+    border: 1px solid #E0E0E0;
+    margin-left: 20px;
+}
+.mainCon a {
+    color: #000000;
+    display: inline-block;
+    font-size: 12px;
+    padding: 16px 26px;
+}
+.mainCon h1 {
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #E0E0E0;
+    color: #485C77;
+    font-size: 24px;
+    line-height: 40px;
+    text-indent: 10px;
+}
+.mainCon h1 .mt-btn {
+    background-color: #FFFFFF;
+    border: 1px solid #E0E0E0;
+    color: #404040;
+    cursor: pointer;
+    float: right;
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 24px;
+    margin-right: 40px;
+    margin-top: 8px;
+    padding: 0 5px;
+}
+.J_sbControler {
+    background: url("../images/png8.png") no-repeat scroll 10px 0 rgba(0, 0, 0, 0);
+    height: 30px;
+    left: 144px;
+    position: absolute;
+    top: 420px;
+    width: 15px;
+}
+.sb_hidden {
+    background-position: -15px 0;
+    left: 0;
+}
+.newslist {
+    color: #2A2A2A;
+    margin: 20px 40px 0;
+}
+.newslist .nhead {
+    border: 1px solid #E3E3E3;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 42px;
+    margin-bottom: 20px;
+    padding: 0 20px;
+}
+.newslist .nhead s {
+    float: left;
+}
+.newslist .nhead b {
+    float: right;
+}
+.newslist .newsitem1, .newslist .newsitem2 {
+    background-color: #FAFAFA;
+    border-left: 4px solid #54CB00;
+    line-height: 68px;
+    margin: 10px 0;
+    padding-left: 10px;
+}
+.newslist .newsitem1 a, .newslist .newsitem2 a {
+    color: #3483D3;
+    float: right;
+    padding: 0 10px;
+    text-decoration: none;
+}
+.newslist .newsitem1 input, .newslist .newsitem2 input {
+    border: 1px solid #D4D4D4;
+    height: 38px;
+    line-height: 38px;
+    padding: 0 10px;
+    width: 288px;
+}
+.newslist .newsitem1 {
+    cursor: pointer;
+}
+.newslist .newsitem2 {
+    background-color: #F2F2F2;
+    border-left: 4px solid #C8E3C0;
+    margin-left: 30px;
+}
+.newslist .selected {
+    background-color: #FFFFD4;
+}
+.searchArea {
+    background-color: #F9F9F9;
+    border-bottom: 1px solid #E0E0E0;
+    padding: 15px 0;
+}
+.ticketMonitoring .searchArea {
+    border-bottom: medium none;
+    border-top: 1px solid #E0E0E0;
+    padding-left: 25px;
+}
+.inputRow .inputItem {
+    float: left;
+    height: 35px;
+    padding-left: 20px;
+}
+.ticketOrdersAdmin .inputRow .inputItem {
+    width: 268px;
+}
+.inputRow .inputItem label {
+    float: left;
+    line-height: 24px;
+    text-align: right;
+    vertical-align: middle;
+    width: 75px;
+}
+.inputRow select {
+    width: 173px;
+}
+.inputRow .inputItemFreeLen {
+    float: left;
+    height: 40px;
+    line-height: 40px;
+    padding: 20px 25px 20px 20px;
+}
+.inputRow .inputItemFreeLen .buttonSearch {
+    margin-top: 5px;
+}
+.inputRow .imgUpload {
+    float: left;
+}
+.inputRow .imgUpload input[type="text"] {
+    width: 120px;
+}
+.inputRow .imgUpload input[type="file"] {
+    height: 24px;
+    line-height: 24px;
+    width: 240px;
+}
+.inputRow .imgUpload a {
+    margin: 0 5px;
+    text-decoration: none;
+}
+.inputRow .imgUpload input[type="checkbox"] {
+    margin-right: 5px;
+}
+.advancedSearchArea {
+    background-color: #FFFFFF;
+    border: medium none;
+    height: 32px;
+    padding: 20px 0;
+}
+.provinceAdmin .searchItem {
+    display: inline-block;
+    float: left;
+    margin-left: 25px;
+}
+.provinceAdmin .addFlightInfo {
+    margin: 20px 0 0 25px;
+}
+.advancedSearchButton {
+    color: #3483D3;
+    cursor: pointer;
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    margin-left: 10px;
+    vertical-align: top;
+}
+.searchArea .buttonSearch {
+    vertical-align: top;
+}
+.inputRow input[type="text"], .inputRow input[type="password"], .commInput, .J_tInput {
+    background: url("/images/input_bg.png") repeat-x scroll center top #FFFFFF;
+    border: 1px solid #ABABAB;
+    height: 18px;
+    line-height: 18px;
+    padding: 2px 5px;
+    width: 160px;
+}
+.inputRow .inputItemFreeLen input[type="text"] {
+    margin: 0 5px;
+    width: 82px;
+}
+.infoTable input[type="text"] {
+    border-color: #DDDDDD #EAEAEA;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    color: #999999;
+    height: 26px;
+    line-height: 26px;
+    padding: 2px 5px;
+    width: 83px;
+}
+.addition input[type="text"] {
+    color: #111111;
+    padding: 2px 5px;
+    width: 223px;
+}
+.addition input.gray, input.gray {
+    color: #CCCCCC;
+}
+.searchItem input[type="text"] {
+    float: left;
+    width: 196px;
+}
+.addition input[type="radio"] {
+    width: 20px;
+}
+.commInput:focus {
+    border: 1px solid #6498C9;
+}
+.textInputHeight30 {
+    height: 24px;
+}
+.listTextInput {
+    float: left;
+}
+.loginBox input {
+    border-color: #CDCDCD;
+    width: 155px;
+}
+.loginBox input.securityCode {
+    width: 55px;
+}
+table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    word-break: break-all;
+}
+table col {
+    word-wrap: break-word;
+}
+.tableborder {
+    border: 1px solid #E0E0E0;
+}
+th, td {
+    text-align: center;
+}
+table .tb-odd {
+    background-color: #F9F9F9;
+}
+table .tb-odd input, table .trAdd input {
+    height: 30px;
+    line-height: 30px;
+    width: 100%;
+}
+table .tb-odd td a {
+    padding: 0 3px;
+}
+table a {
+    color: #3483D3;
+    text-decoration: none;
+}
+table tfoot {
+    background-color: #F9F9F9;
+}
+.ticketOrdersList table tbody .selected {
+    background-color: #FFFFD4;
+}
+.ticketOrdersList {
+    background-color: #FFFFFF;
+    margin-top: 10px;
+}
+.ticketOrdersList table {
+    margin-left: -1px;
+    width: 100%;
+}
+.ticketOrdersList th {
+    font-weight: bold;
+    height: 35px;
+}
+.ticketOrdersList td {
+    height: 45px;
+    padding: 0 10px;
+    text-align: left;
+}
+.ticketOrdersList td a {
+    margin: 0 2px;
+}
+.crussingRange span {
+    display: inline-table;
+}
+.arrow-one {
+    background: url("/images/arrow-one.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    display: inline-block;
+    height: 5px;
+    margin: 5px;
+    width: 11px;
+}
+.arrow-two {
+    background: url("/images/arrow-two.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    display: inline-block;
+    height: 12px;
+    margin: 3px 4px 0 5px;
+    width: 12px;
+}
+.infoTable table {
+    width: 776px;
+}
+.infoTable th {
+    background: url("/images/detail_table_th_bg.png") repeat-x scroll 0 0 #000000;
+    border-bottom: 1px solid #000000;
+    color: #FFFFFF;
+    height: 29px;
+}
+.infoTable td {
+    line-height: 22px;
+    padding: 10px 0;
+}
+.infoTable .options {
+    padding: 0 15px;
+}
+.infoTable .buttonOpration {
+    margin: 5px 0;
+}
+.flightChange .ticketOrdersList {
+    margin-top: 0;
+}
+.addition .listBlocks table, .listBlocks td, .noCellBorder td, .noCellBorder th, .ui-dialog table.invisibleTable, .popWrap table {
+    border: medium none;
+}
+.listBlocks td {
+    height: 36px;
+    text-align: right;
+}
+.listBlocks td:last-child {
+    text-align: left;
+}
+td.tableContainer {
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    height: 205px;
+    overflow-y: auto;
+    vertical-align: top;
+}
+td.tableContainer tbody tr {
+    cursor: pointer;
+}
+table.frameTable {
+    margin-bottom: 10px;
+}
+.listTable td:first-child {
+    text-align: left;
+}
+.listTable td:last-child {
+    text-align: center;
+}
+.listTable td {
+    height: 25px;
+    padding: 0 10px;
+}
+.listTable tr.selected {
+    background-color: #EBE9E9;
+}
+.blueHead th {
+    background: url("/images/detail_table_th_bg.png") repeat-x scroll 0 0 #000000;
+    border-bottom: 1px solid #000000;
+    color: #FFFFFF;
+    height: 29px;
+}
+.ui-dialog td {
+    height: 25px;
+}
+.ui-dialog .recordTable th, .ui-dialog .recordTable td {
+    height: 30px;
+}
+.provinceAdmin .ticketOrdersList, .ticketMonitoring .ticketOrdersList {
+    margin-top: 0;
+}
+.operationSelection {
+    width: 130px;
+}
+.invisibleTable td {
+    text-align: left;
+    vertical-align: top;
+}
+.statisticsTable {
+    background-color: #F7F6F6;
+    width: 100%;
+}
+.statisticsTable th {
+    height: 50px;
+    padding-left: 15px;
+    text-align: left;
+}
+.statisticsTable td {
+    height: 65px;
+}
+.creditsDetailTable {
+    border: medium none;
+    margin-left: -11px;
+    width: 100%;
+}
+.creditsDetailTable th {
+    background-color: #F7F6F6;
+    border: medium none;
+    height: 30px;
+    padding-left: 15px;
+    text-align: left;
+}
+.creditsDetailTable thead tr {
+    border: 1px solid #E0E0E0;
+}
+.creditsDetailTable td {
+    height: 30px;
+    padding-left: 15px;
+    text-align: left;
+}
+table.contact td {
+    padding-top: 5px;
+    vertical-align: top;
+}
+table.contact td.inputTd {
+    padding-top: 0;
+    text-align: left;
+}
+.popWrap table td {
+    text-align: left;
+}
+.tableButtons {
+    background-color: #FCFCFC;
+    margin-left: -1px;
+    padding-top: 15px;
+}
+.pagination {
+    height: 100px;
+    padding-top: 40px;
+    width: 100%;
+}
+.pagination div {
+    margin: 0 auto;
+    width: 596px;
+}
+.pagination a {
+    background: url("/images/pagination_short_bg.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    color: #FFFFFF;
+    display: inline-block;
+    height: 25px;
+    line-height: 24px;
+    margin: 10px;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    width: 27px;
+}
+.pagination a.next {
+    background: url("/images/pagination_long_bg.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    width: 60px;
+}
+.pagination a.selected {
+    background: url("/images/pagination_short_focus_bg.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.pagination a:hover {
+    background: url("/images/pagination_short_focus_bg.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.pagination a.next:hover {
+    background: url("/images/pagination_long_focus_bg.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.pagination a.disabledNextpage {
+    background: url("/images/pagination_short_focus_bg.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.pagination a.disabledNext {
+    background: url("/images/pagination_long_focus_bg.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.ui-dialog .pagination {
+    padding-top: 28px;
+}
+.ui-dialog .pagination a {
+    margin: 7px;
+}
+.buttonSearch {
+    background: url("/images/button_search.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border: medium none;
+    color: #D5FFFF;
+    cursor: pointer;
+    height: 30px;
+    line-height: 25px;
+    text-align: center;
+    width: 85px;
+}
+.buttonBack {
+    background: url("/images/button_back_bg.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border: medium none;
+    color: #FFFFFF;
+    cursor: pointer;
+    height: 30px;
+    line-height: 25px;
+    text-align: center;
+    width: 85px;
+}
+.buttonOpration {
+    background: url("/images/button_operation_bg.png") no-repeat scroll 0 0 #FFFFFF;
+    border: medium none;
+    cursor: pointer;
+    height: 25px;
+    width: 82px;
+}
+.buttonOprationDisabled {
+    background: url("/images/button_operation_focus_bg.png") no-repeat scroll 0 0 #FFFFFF;
+    border: medium none;
+    color: #FFFFFF;
+    cursor: pointer;
+    height: 25px;
+    width: 82px;
+}
+.buttonTable {
+    background: url("/images/button_table_bg.png") no-repeat scroll 0 0 #FFFFFF;
+    border: medium none;
+    color: #000000;
+    cursor: pointer;
+    float: left;
+    height: 48px;
+    line-height: 48px;
+    margin-left: -1px;
+    text-align: center;
+    text-decoration: none;
+    width: 142px;
+}
+.buttonTable:hover {
+    background: url("/images/button_table_focus_bg.png") no-repeat scroll 0 0 #FFFFFF;
+    border: medium none;
+    color: #FFFFFF;
+    cursor: pointer;
+    float: left;
+    height: 48px;
+    line-height: 48px;
+    margin-left: -1px;
+    text-align: center;
+    width: 142px;
+}
+.buttonTableSelect {
+    background: url("/images/button_table_focus_bg.png") no-repeat scroll 0 0 #FFFFFF;
+    border: medium none;
+    color: #FFFFFF;
+    cursor: pointer;
+    float: left;
+    height: 48px;
+    line-height: 48px;
+    margin-left: -1px;
+    text-align: center;
+    width: 142px;
+}
+.buttonSeek {
+    background: url("/images/button_seek.png") no-repeat scroll 0 0 #FFFFFF;
+    border: medium none;
+    cursor: pointer;
+    float: left;
+    height: 25px;
+    width: 25px;
+}
+.buttonSeekBig {
+    background: url("/images/button_seek_big.png") no-repeat scroll 0 0 #FFFFFF;
+    border: medium none;
+    cursor: pointer;
+    float: left;
+    height: 30px;
+    margin-left: -1px;
+    width: 31px;
+}
+.buttonNewContact {
+    background-color: #F1F1F1;
+    border: 1px solid #C9C9C9;
+    color: #3483D3;
+    cursor: pointer;
+    height: 24px;
+    width: 89px;
+}
+.buttonNewRole {
+    background: url("/images/userRole_add.png") no-repeat scroll 0 0 #F1F1F1;
+    border: medium none;
+    color: #3483D3;
+    cursor: pointer;
+    height: 24px;
+    line-height: 24px;
+    padding-left: 12px;
+    width: 76px;
+}
+.buttonListBlock {
+    background: url("/images/button_listBlock_bg.png") repeat-x scroll 0 0 #FFFFFF;
+    border: 1px solid #C9C9C9;
+    cursor: pointer;
+    height: 28px;
+    width: 75px;
+}
+.buttonLogin {
+    background: url("/images/button_login_bg.png") no-repeat scroll 0 0 #FFFFFF;
+    border: medium none;
+    color: #FFFFFF;
+    cursor: pointer;
+    height: 25px;
+    line-height: 24px;
+    width: 67px;
+}
+.infoContent {
+    background-color: #FFFFFF;
+    padding: 0 44px;
+}
+.infoContent h2 {
+    font-size: 16px;
+    line-height: 60px;
+}
+.infoContent .infoBox {
+    background-color: #EEF9FF;
+    border: 1px solid #B5B5B5;
+    padding: 15px 20px;
+    width: 734px;
+}
+.infoContent .infoBox div {
+    float: left;
+    margin-right: 40px;
+}
+.infoDetail {
+    color: #999999;
+    font-size: 12px;
+}
+.infoContent .infoMoney {
+    color: #FF0000;
+}
+.infoContent .info {
+    padding: 0 20px;
+}
+.infoContent .infoItem {
+    display: inline-block;
+    float: left;
+    line-height: 22px;
+    width: 170px;
+}
+.infoContent h3 {
+    display: inline-block;
+    font-size: 12px;
+    line-height: 22px;
+    margin: 6px;
+}
+.infoTab .tab_menu {
+    background-color: #386DA8;
+    color: #FFFFFF;
+    float: left;
+    height: 188px;
+    padding-left: 3px;
+    padding-top: 2px;
+    width: 70px;
+}
+.infoTab .tab_menu div {
+    cursor: pointer;
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+}
+.infoTab .tab_menu span {
+    background: url("/images/detail_tab_border.png") repeat scroll 0 0 #FFFFFF;
+    display: block;
+    height: 2px;
+    width: 69px;
+}
+.infoTab .tab_menu div.selected {
+    background-color: #F4F4F4;
+    color: #386DA8;
+}
+.infoTab .tab_box div {
+    background-color: #F4F4F4;
+    height: 138px;
+    line-height: 24px;
+    margin-left: 73px;
+    padding: 18px 20px;
+    width: 657px;
+}
+.back {
+    background-color: #FFFFFF;
+    height: 145px;
+    padding: 110px 0 0 375px;
+    width: 100%;
+}
+.tickcetDetail .buttonBack {
+}
+.invalidatedTicket {
+    position: relative;
+}
+.invalidatedTicket div {
+    content: url("/images/ticket_invalidated.png");
+    left: 0;
+    position: absolute;
+    top: 0;
+}
+.select_box {
+    cursor: pointer;
+    display: inline-block;
+    font-weight: normal;
+    line-height: 25px;
+    position: relative;
+    text-align: left;
+    vertical-align: middle;
+}
+.select_box {
+}
+.select_box .select_up {
+    background: url("../images/selectbox.png") repeat-x scroll 0 -9px rgba(0, 0, 0, 0);
+    border: 1px solid #AFAFAF;
+    border-radius: 5px 5px 5px 5px;
+    height: 25px;
+    overflow: hidden;
+}
+.select_box .select_up:after {
+    clear: both;
+    content: " ";
+    display: block;
+    height: 0;
+}
+.select_box .select_up h4 {
+    color: #666666;
+    float: left;
+    font-weight: normal;
+    padding-left: 16px;
+}
+.select_box .select_up p {
+    border-left: 1px solid #AFAFAF;
+    float: right;
+    height: 5px;
+    padding: 10px 4px;
+    width: 7px;
+}
+.hover .select_up {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.hover .select_up p {
+    background: url("../images/selectbox.png") repeat-x scroll 0 -39px rgba(0, 0, 0, 0);
+    border-top-right-radius: 5px;
+}
+.select_box .select_up p b {
+    background: url("../images/selectbox.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    display: block;
+    height: 4px;
+    width: 7px;
+}
+.select_box .select_list {
+    border: 1px solid #AFAFAF;
+    left: 0;
+    position: absolute;
+    top: 27px;
+}
+.select_box .select_list a {
+    background-color: #FFFFFF;
+    color: #585858;
+    display: block;
+    height: 25px;
+    overflow: hidden;
+    padding-left: 16px;
+    position: relative;
+    text-decoration: none;
+}
+.select_box .select_list a:hover {
+    background: url("../images/selectbox.png") repeat-x scroll 0 -69px rgba(0, 0, 0, 0);
+}
+.select_box .erji {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #D2DBE2;
+    left: 90px;
+    position: absolute;
+    top: 0;
+    width: 113px;
+}
+.select_box .icon {
+    background: url("../images/apply_icon.png") no-repeat scroll -5px -139px rgba(0, 0, 0, 0);
+    display: inline-block;
+    height: 12px;
+    position: absolute;
+    right: 5px;
+    top: 8px;
+    width: 7px;
+}
+.ui-dialog {
+    background-color: #FFFFFF;
+    border: 10px solid #4C4C4C;
+    line-height: 1;
+    position: absolute;
+}
+.ui-dialog-titlebar {
+    background: url("/images/dialog_title_bg.png") repeat-x scroll 0 0 #FFFFFF;
+    height: 30px;
+    padding-top: 0;
+    position: relative;
+}
+.ui-dialog-titlebar .ui-dialog-title {
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 30px;
+    margin-left: 10px;
+}
+.ui-dialog-titlebar .ui-dialog-titlebar-close {
+    background: url("/images/dialog_close.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    height: 30px;
+    position: absolute;
+    right: 0;
+    text-indent: -4999px;
+    top: 0;
+    width: 31px;
+}
+.ui-dialog-buttonpane {
+    background-color: #F6F6F6;
+    border-top: 1px solid #EBEBEB;
+    padding-right: 7px;
+    text-align: right;
+}
+.ui-widget-overlay {
+    background-color: #000000;
+    left: 0;
+    opacity: 0.4;
+    position: absolute;
+    top: 0;
+}
+.ui-dialog-buttonset button {
+    background-color: #FBFBFB;
+    border: 1px solid #B3B3B3;
+    color: #000000;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 12px;
+    height: 27px;
+    line-height: 25px;
+    margin: 5px;
+    text-align: center;
+    width: 50px;
+}
+.ui-dialog-buttonset button:hover {
+    border: 1px solid #376CA4;
+}
+.ui-dialog .dialogContent {
+    padding: 50px 60px;
+}
+.ui-dialog .dialogInput {
+    height: 38px;
+    line-height: 38px;
+}
+.marginleft30 {
+    margin-left: 30px;
+}
+.marginleft15 {
+    margin-left: 15px;
+}
+.marginleft150 {
+    margin-left: 150px;
+}
+.marginleft80 {
+    line-height: 20px;
+    margin-left: 80px;
+}
+.ui-dialog .refundPercentage {
+    width: 195px;
+}
+.dialogText {
+    height: 108px;
+    vertical-align: top;
+    width: 234px;
+}
+.airlineChooseContent {
+    padding: 14px 24px;
+}
+.dialogTable {
+    margin-top: 14px;
+}
+.ui-dialog .checkboxList {
+    max-height: 265px;
+    overflow-y: auto;
+    padding: 25px 0 0 50px;
+}
+.ui-dialog .checkboxs {
+    padding: 25px 50px;
+}
+hr {
+    background-color: #CCCCCC;
+    border: medium none;
+    color: #CCCCCC;
+    display: block;
+    font-size: 0;
+    height: 1px;
+    line-height: 1px;
+    margin: 10px 0;
+    width: 90%;
+}
+.privilegeTitle {
+    background: url("/images/dialog_privilege_title.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    display: inline-block;
+    font-weight: bold;
+    height: 24px;
+    line-height: 24px;
+    text-align: right;
+    vertical-align: middle;
+    width: 15px;
+}
+.privilegeTitleFold {
+    background-position: left bottom;
+}
+.privileges {
+    color: #666666;
+}
+.listCheckbox {
+    height: 36px;
+    width: 150px;
+}
+.record {
+    padding: 34px 28px;
+}
+.operationArea {
+    background-color: #FCFCFC;
+    border: medium none;
+    height: 32px;
+    margin-left: -1px;
+    padding: 15px 0 0 20px;
+}
+.operationArea a, .addFlightInfo {
+    background: url("/images/button_add.png") no-repeat scroll 0 0 #FCFCFC;
+    color: #000000;
+    display: block;
+    height: 16px;
+    padding-left: 25px;
+    text-decoration: none;
+    vertical-align: middle;
+    width: 75px;
+}
+.listArea {
+    background-color: #EEF9FF;
+    border-bottom: 1px solid #E0E0E0;
+    line-height: 24px;
+    padding: 10px 15px;
+}
+span.impo {
+    color: #FF0000;
+    font-family: "¿¿¿¿",serif;
+}
+.tip {
+    line-height: 28px;
+    text-indent: 15px;
+}
+.addition {
+    background-color: #FFFFFF;
+    border-top: 1px solid #E0E0E0;
+    padding-top: 25px;
+}
+.listItem {
+    line-height: 25px;
+    margin-bottom: 10px;
+}
+.listExp {
+    float: left;
+    height: 25px;
+    line-height: 27px;
+    margin-right: 15px;
+    text-align: right;
+    width: 180px;
+}
+.multilineListExp {
+    float: left;
+    margin-right: 15px;
+    text-align: right;
+    width: 175px;
+}
+.listExp span.impo {
+    float: left;
+    margin-left: 80px;
+}
+.addition select {
+    height: 25px;
+    width: 233px;
+}
+.searchItem span {
+    display: block;
+    float: left;
+    height: 25px;
+    width: 3px;
+}
+label.radioItem {
+    line-height: 25px;
+    padding-right: 20px;
+}
+.finish {
+    padding: 40px 0 175px 195px;
+}
+.finish button {
+    float: left;
+    margin-right: 20px;
+}
+.listBlocks {
+    float: left;
+}
+.listBlock {
+    background: url("/images/listBlock_bg.png") repeat-x scroll center top #F3F2F2;
+    border: 1px solid #BCBCBC;
+    margin: 12px 0 24px;
+    padding: 12px 80px 7px 10px;
+    position: relative;
+}
+.listBlockClose {
+    background: url("/images/listBlock_close.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    cursor: pointer;
+    height: 26px;
+    position: absolute;
+    right: -13px;
+    top: -13px;
+    width: 26px;
+}
+select.selectWid105 {
+    width: 105px;
+}
+.listBlocks .buttonNewContact {
+    margin: -12px 0 20px;
+}
+.listItem textarea {
+    background: url("/images/input_bg.png") repeat-x scroll center top #FFFFFF;
+    border: 1px solid #ABABAB;
+    height: 108px;
+    line-height: 18px;
+    padding: 2px 5px;
+    width: 223px;
+}
+.listBlock .searchItem {
+    margin: 10px 0;
+}
+.news .listExp {
+    width: 80px;
+}
+.news .listExp span.impo {
+    margin-left: 30px;
+}
+.news .listItem textarea {
+    width: 450px;
+}
+.news .listItem .fl {
+    width: 800px;
+}
+.Validform_checktip {
+    color: #999999;
+    font-size: 12px;
+    height: 25px;
+    line-height: 25px;
+    margin: -1px 0 0 10px;
+    overflow: hidden;
+}
+.Validform_right {
+    background: url("/images/valid_right.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+    color: #71B83D;
+    padding-left: 20px;
+}
+.Validform_wrong {
+    background: url("/images/valid_error.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+    color: #000000;
+    height: 25px;
+    line-height: 25px;
+    margin: -1px 0 0 10px;
+    padding: 0 20px;
+}
+.Validform_loading {
+    background: url("/images/valid_onLoad.gif") no-repeat scroll left center rgba(0, 0, 0, 0);
+    padding-left: 20px;
+}
+.Validform_error {
+    background-color: #FFE7E7;
+    background-image: none;
+}
+#Validform_msg {
+    background: none repeat scroll 0 0 #FFFFFF;
+    color: #7D8289;
+    display: none;
+    font: 12px/1.5 tahoma,arial,¿¿,sans-serif;
+    position: absolute;
+    right: 50px;
+    top: 0;
+    width: 280px;
+    z-index: 99999;
+}
+#Validform_msg .iframe {
+    left: 0;
+    position: absolute;
+    top: -1px;
+    z-index: -1;
+}
+#Validform_msg .Validform_title {
+    background-color: #000000;
+    color: #FFFFFF;
+    font-weight: bold;
+    height: 25px;
+    line-height: 25px;
+    padding: 0 8px;
+    position: relative;
+    text-align: left;
+}
+#Validform_msg a.Validform_close:link, #Validform_msg a.Validform_close:visited {
+    color: #FFFFFF;
+    line-height: 22px;
+    position: absolute;
+    right: 8px;
+    text-decoration: none;
+    top: 0;
+}
+#Validform_msg a.Validform_close:hover {
+    color: #CCCC00;
+}
+#Validform_msg .Validform_info {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: -moz-use-text-color #000000 #000000;
+    border-image: none;
+    border-right: 1px solid #000000;
+    border-style: none solid solid;
+    border-width: medium 1px 1px;
+    padding: 8px;
+    text-align: left;
+}
+.listBlocks .Validform_wrong {
+    background: url("/images/valid_error.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+    border: medium none;
+    color: #FF0000;
+    padding-left: 20px;
+    white-space: nowrap;
+}
+.listBlocks .Validform_checktip {
+    display: none;
+}
+.width400Block {
+    height: 36px;
+    width: 310px;
+}
+.textRight {
+    display: inline-block;
+    text-align: right;
+    width: 85px;
+}
+.supplierDetail {
+    background-color: #FFFFFF;
+    padding-top: 65px;
+}
+.dialogLink {
+    color: #3483D3;
+    cursor: pointer;
+}
+.clientDetail {
+    background-color: #FFFFFF;
+    padding-top: 20px;
+}
+.clientDetail h2 {
+    font-size: 16px;
+    line-height: 40px;
+    margin-left: 48px;
+}
+.clientDetail .checkboxTitle h2 {
+    line-height: 1;
+}
+.clientDetail .checkboxTitle span {
+    margin-left: 50px;
+}
+.width150Block {
+    width: 150px;
+}
+.whole {
+    background-color: #DADADA;
+}
+.login {
+    background: url("/images/login_bg.png") no-repeat scroll center center #DADADA;
+    height: 600px;
+    margin: 0 auto;
+    padding: 0;
+    width: 1400px;
+}
+.logoBox {
+    float: left;
+    height: 105px;
+    margin: 0 auto;
+    padding: 250px 70px 0 395px;
+}
+.logoBox .logoImg {
+    margin: 0 0 12px 90px;
+}
+.loginBox .securityCodeImg {
+    height: 25px;
+    overflow: hidden;
+    width: 67px;
+}
+.loginBox {
+    float: left;
+    height: 105px;
+    margin: 0 auto;
+    padding: 250px 0 0 65px;
+}
+.loginBox ul {
+    float: left;
+}
+.loginBox li {
+    height: 38px;
+    line-height: 38px;
+}
+.loginBox ul.text {
+    width: 65px;
+}
+.loginBox ul.inputs {
+    width: 400px;
+}
+.userRole {
+    background-color: #F7F6F6;
+    border: 1px solid #ACACAC;
+    color: #ACACAC;
+    cursor: pointer;
+    display: inline-block;
+    float: left;
+    margin-right: 17px;
+    padding: 0 10px;
+    position: relative;
+    width: 62px;
+}
+.userRole:hover {
+    background-color: #3B71AF;
+    color: #FFFFFF;
+}
+.userRoleDelete {
+    background: url("/images/userRole_delete.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    height: 15px;
+    position: absolute;
+    right: -7px;
+    top: -7px;
+    width: 15px;
+}
+.hotelInfo {
+    border-bottom: 1px dotted #E0E0E0;
+    padding-bottom: 15px;
+}
+.financeContent {
+    background-color: #FFFFFF;
+    padding: 0 10px;
+}
+.financeContent h2 {
+    display: inline-block;
+    font-size: 16px;
+    line-height: 60px;
+}
+.titleWithSelect {
+    position: relative;
+}
+.creditsSource {
+    position: absolute;
+    right: 10px;
+    top: 18px;
+}
+.creditsSource select, .orderType select {
+    width: 130px;
+}
+.orderType {
+    position: absolute;
+    right: 155px;
+    top: 18px;
+}
+.popWrap {
+    padding-left: 4px;
+    position: absolute;
+    z-index: 110;
+}
+.popWrap s {
+    background: url("../images/pop8.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    height: 7px;
+    position: absolute;
+    width: 6px;
+}
+.popWrap .popCon {
+    background-color: #F9F9F9;
+    border: 2px solid #3483D3;
+    border-radius: 5px 5px 5px 5px;
+    padding: 17px;
+    position: relative;
+}
+.popWrap-r {
+    padding-left: 0;
+    padding-right: 4px;
+}
+.popWrap-r s {
+    background-position: 0 -13px;
+}
+.tipTitle {
+    font-weight: bold;
+}
+.popWrap p {
+    line-height: 1.8;
+    max-width: 220px;
+}
+.enterBtn {
+    padding: 10px 0 10px 20px;
+}
+.searchArea2 {
+    padding-top: 24px;
+}
+.modify {
+    font-size: 12px;
+}
+
+.hw-button1{border:solid 1px green;padding:2px 6px;margin-left:35px;margin-top:5px;display:inline-block; text-decoration:none;color:Green;}
