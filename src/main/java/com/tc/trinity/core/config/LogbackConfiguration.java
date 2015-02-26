@@ -10,6 +10,7 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import javassist.ClassPool;
@@ -18,6 +19,7 @@ import javassist.CtMethod;
 import javassist.Loader;
 import javassist.LoaderClassPath;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
 
@@ -55,13 +57,28 @@ public class LogbackConfiguration extends AbstractConfigurable {
         return name;
     }
     
+    @SuppressWarnings("rawtypes")
     @Override
     public boolean doInit(ConfigContext context, Properties properties) {
     
         if (_checkValidity()) {
+            ArrayList<Object> conf = new ArrayList<Object>();
+            for (Map.Entry<Object, Object> entry : properties.entrySet()) {
+                if (!System.getProperties().containsKey(entry.getKey())) {
+                    conf.add(entry.getKey());
+                    System.getProperties().put(entry.getKey(), entry.getValue());
+                }
+            }
             loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
-            System.getProperties().putAll(properties);
+            for (Map.Entry entry : properties.entrySet()) {
+                loggerContext.putProperty((String) entry.getKey(), (String) entry.getValue());
+            }
+            
             initialStatus = performXMLConfiguration();
+            System.out.println(conf);
+            for (Object key : conf) {
+                System.getProperties().remove(key);
+            }
             return true;
         } else {
             return false;
@@ -92,6 +109,7 @@ public class LogbackConfiguration extends AbstractConfigurable {
     public boolean doOnChange(String key, String originalValue, String value) {
     
         if (_checkValidity()) {
+            loggerContext.putProperty(key, value);
             performXMLConfiguration();
             return true;
         } else {
@@ -102,10 +120,14 @@ public class LogbackConfiguration extends AbstractConfigurable {
     private boolean performXMLConfiguration() {
     
         JoranConfigurator jc = new JoranConfigurator();
+        Map<String, String> props = loggerContext.getCopyOfPropertyMap();
         jc.setContext(loggerContext);
         
         URL mainURL = ConfigurationWatchListUtil.getMainWatchURL(loggerContext);
         loggerContext.reset();
+        for (Map.Entry<String, String> entry : props.entrySet()) {
+            loggerContext.putProperty(entry.getKey(), entry.getValue());
+        }
         
         try {
             jc.doConfigure(mainURL);
@@ -124,10 +146,12 @@ public class LogbackConfiguration extends AbstractConfigurable {
     }
     
     @Override
-    public Properties fallbackSetting() {
+    public void fallbackSetting(Properties properties) {
     
+        Properties localProperties = new Properties();
+        localProperties.putAll(properties);
         if (!_checkValidity()) {
-            return null;
+            return;
         }
         try {
             
@@ -154,44 +178,57 @@ public class LogbackConfiguration extends AbstractConfigurable {
             InputStream is = this.getClass().getClassLoader().getResourceAsStream("logback.xml");
             List<SaxEvent> events = saxGen.recordEvents(new InputSource(is));
             SaxEvent preEvent = null;
-            Properties props = new Properties();
             for (SaxEvent event : events) {
                 if (event instanceof BodyEvent) {
                     m.invoke(null, ((BodyEvent) event).getText(), null, null);
                     List<String> propLine = loadProperties();
-                    // 需要确认环境变量中不存在此配置项的设定。否则的话，就不需要额外预设了。
-                    if (preEvent != null && propLine.size() > 0 && System.getProperties().get(propLine.get(propLine.size() - 1)) == null) {
+                    // 需要确认用户配置的环境变量中不存在此配置项的设定。否则的话，就不需要额外预设了。
+                    if (preEvent != null && propLine.size() > 0 && localProperties.get(propLine.get(propLine.size() - 1)) == null) {
                         String key = propLine.get(propLine.size() - 1);
                         switch (preEvent.getLocalName().toLowerCase()) {
                         case "file":
-                            props.put(key, "app.log");
+                            localProperties.put(key, "app.log");
                             break;
                         case "filenamepattern":
-                            props.put(key, "app.%d{yyyyMMdd}.log");
+                            localProperties.put(key, "app.%d{yyyyMMdd}.log");
                             break;
                         case "pattern":
-                            props.put(key, "%d %p [%c] - %m%n");
+                            localProperties.put(key, "%d %p [%c] - %m%n");
                             break;
                         }
                     }
                 } else if (event instanceof StartEvent) {
                     if (event.getLocalName().equalsIgnoreCase("logger") || event.getLocalName().equalsIgnoreCase("root")) {
-                        m.invoke(null, ((StartEvent) event).getAttributes().getValue("level"), null, null);
-                        List<String> propLine = loadProperties();
-                        String k = ((StartEvent) event).getAttributes().getValue("level");
-                        if (k.startsWith("${") && propLine.size() > 0 && System.getProperties().get(propLine.get(propLine.size() - 1)) == null) {
-                            props.put(propLine.get(propLine.size() - 1), "DEBUG");
+                        String cs = ((StartEvent) event).getAttributes().getValue("level");
+                        if (StringUtils.isNotBlank(cs)) {
+                            m.invoke(null, cs, null, null);
+                            List<String> propLine = loadProperties();
+                            String k = ((StartEvent) event).getAttributes().getValue("level");
+                            // 需要确认用户配置的环境变量中不存在此配置项的设定。否则的话，就不需要额外预设了。
+                            if (k.startsWith("${") && propLine.size() > 0 && localProperties.get(propLine.get(propLine.size() - 1)) == null) {
+                                localProperties.put(propLine.get(propLine.size() - 1), "DEBUG");
+                            }
+                        }
+                    } else if (event.getLocalName().equalsIgnoreCase("level")) {
+                        String cs = ((StartEvent) event).getAttributes().getValue("value");
+                        if (StringUtils.isNotBlank(cs)) {
+                            m.invoke(null, cs, null, null);
+                            List<String> propLine = loadProperties();
+                            String k = ((StartEvent) event).getAttributes().getValue("value");
+                            // 需要确认用户配置的环境变量中不存在此配置项的设定。否则的话，就不需要额外预设了。
+                            if (k.startsWith("${") && propLine.size() > 0 && localProperties.get(propLine.get(propLine.size() - 1)) == null) {
+                                localProperties.put(propLine.get(propLine.size() - 1), "DEBUG");
+                            }
                         }
                     }
                 }
                 cleanTempFile();
                 preEvent = event;
             }
-            System.getProperties().putAll(props);
-            return props;
+            // 先进行一次预配置
+            this.doInit(null, localProperties);
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
         } finally {
             cleanTempFile();
         }

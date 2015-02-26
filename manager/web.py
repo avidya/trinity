@@ -13,7 +13,7 @@ from bottle import Bottle,route,run,template,request,redirect,static_file,view,g
 from beaker.middleware import SessionMiddleware
 import bottle
 
-hosts={'dev':'10.1.10.215:2181','alpha':'10.1.10.215:2181','qa':'10.1.25.147:2181','beta':'10.1.25.5:2181','product':'172.25.12.117:2181'}
+hosts={'dev':'10.1.10.215:2181','alpha':'10.1.10.62:2181','qa':'10.1.25.147:2181','beta':'10.1.25.5:2181','product':'172.25.12.117:2181'}
 base_path='/trinity/config/'
 
 log_file='trinity.log'
@@ -100,7 +100,11 @@ def user(proj=None):
     result['my_roles']=user_map[result['user']][1]
     result['roles']=','+user_map[user][1].lstrip('(').rstrip(')')+','
     result['projs']=','+user_map[user][2].lstrip('(').rstrip(')')+','
-    zk=KazooClient(hosts['dev'])
+    if hosts.has_key('dev'):
+        zk=KazooClient(hosts['dev'])
+    else:
+        keys=sorted(hosts.keys())
+        zk=KazooClient(hosts[keys[0]])
     projects=[]
     userName=request.forms.get('userName')
     password=request.forms.get('password')
@@ -112,7 +116,7 @@ def user(proj=None):
     try:
         zk.start()
         projects=getProjects(zk)
-        result['projects']=projects
+        result['projects']=sorted(projects, key=lambda a:a.split('-')[0])
         if proj=='modifyPassword'and opereduser:
            if result['user']=='admin'and opereduser!='admin':
               modifyPassword(opereduser,newpassword)
@@ -145,7 +149,7 @@ def user(proj=None):
         zk.stop()
         zk.close()
     if result['user']=='admin':
-       result['userlist']=user_map.keys()
+       result['userlist']=sorted(user_map.keys())
     return result
 
 def modifyPassword(userName,newpassword):  
@@ -199,6 +203,9 @@ def manager(proj=None, env='dev'):
     result['user']=session['trinity_user']
     result['roles']=user_map[result['user']][1]
     result['user_projects']=user_map[result['user']][2]
+    if not hosts.has_key(env):
+        keys=sorted(hosts.keys())
+        env=keys[0]
     zk=KazooClient(hosts[env])
     projects=[]
 
@@ -210,11 +217,13 @@ def manager(proj=None, env='dev'):
     try:
         zk.start()
         projects=getProjects(zk)
-        result['projects']=projects
+        result['projects']=sorted(projects, key=lambda a:a.split('-')[0])
         result['current']=proj if proj else projects[0]
         result['env']=env
+        result['hosts']=hosts
         if action:
             zkOp=zkOperator(zk, result['current'], env, action)
+            log.info('[%s:%s] %s is %s key: %s ===> %s -- %s' % (env, result['current'], result['user'], action, key, value, comment))
             zkOp(key, value, comment)
             
         if env not in result['roles'] or result['current'] not in result['user_projects']:

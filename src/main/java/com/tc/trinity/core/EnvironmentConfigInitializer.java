@@ -3,6 +3,8 @@ package com.tc.trinity.core;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 import com.tc.trinity.configclient.zk.ZookeeperClient;
@@ -21,22 +23,39 @@ public abstract class EnvironmentConfigInitializer extends ConfigInitializer {
     
     private static final String ENVIRON_CONFIG = "/eetop/conf/global.properties";
     
+    /**
+     * 追加对环境配置文件(/eetop/conf/global.properties)的加载<br />
+     * <ul>
+     * <li>windows环境或无此文件时，不作处理。</li>
+     * <li>目前只从此环境配置文件中加载trinity.remote.zookeeper.servers和trinity.config.environment这两个配置项</li>
+     * </ul>
+     * 
+     */
     @Override
-    public Properties mergeProperties() {
+    public Properties mergeProperties() throws TrinityException {
     
         Properties properties = super.mergeProperties();
-        if (OS_NAME.contains("win")) {
-            return properties;
-        }
         File f = new File(ENVIRON_CONFIG);
-        if (!f.exists()) {
+        if (OS_NAME.contains("win") || !f.exists()) {
             return properties;
         }
+        
         Properties p = new Properties();
+        InputStream is = null;
         try {
-            p.load(new LineTrimInputStream(new FileInputStream(f)));
+            is = new LineTrimInputStream(new FileInputStream(f));
+            p.load(is);
         } catch (Exception e) {
             System.err.println("Cannot load file: " + ENVIRON_CONFIG);
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
         }
         if (p.containsKey(ZookeeperClient.SERVERS_PROP_KEY)) {
             properties.put(ZookeeperClient.SERVERS_PROP_KEY, p.get(ZookeeperClient.SERVERS_PROP_KEY));

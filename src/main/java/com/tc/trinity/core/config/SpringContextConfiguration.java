@@ -1,6 +1,8 @@
 
 package com.tc.trinity.core.config;
 
+import static com.tc.trinity.utils.CGLIBHelper.getTargetObject;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collection;
@@ -10,13 +12,10 @@ import java.util.Properties;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
-import org.springframework.core.type.filter.AnnotationTypeFilter;
-import org.springframework.stereotype.Controller;
 
 import com.tc.trinity.core.AbstractConfigurable;
 import com.tc.trinity.core.ConfigContext;
@@ -76,32 +75,34 @@ public class SpringContextConfiguration extends AbstractConfigurable {
         }
     }
     
+    @SuppressWarnings("rawtypes")
     protected void processValueAnnotation(SpringInfo info, String key, String originalValue, String value) {
     
         ApplicationContext ac = info.getContext();
         if (ac == null) {
             return;
         }
-        ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(false);
-        scanner.addIncludeFilter(new AnnotationTypeFilter(Controller.class));
-        for (BeanDefinition beanDefinition : scanner.findCandidateComponents("*")) {
-            
+        
+        for (String beanName : ac.getBeanDefinitionNames()) {
             try {
-                Object bean = ac.getBean(this.getClass().getClassLoader().loadClass(beanDefinition.getBeanClassName()));
-                @SuppressWarnings("rawtypes")
+                Object bean = ac.getBean(beanName);
+                if (bean == null) { // Explanation needed here
+                    continue;
+                }
                 Class clazz = bean.getClass();
+                if (AopUtils.isAopProxy(bean) || AopUtils.isCglibProxy(bean)) {
+                    clazz = clazz.getSuperclass();
+                }
                 for (Field field : clazz.getDeclaredFields()) {
                     if (!field.isAnnotationPresent(Value.class))
                         continue;
                     Value v = field.getAnnotation(Value.class);
                     if (StringUtils.isNotEmpty(v.value()) && v.value().contains(key)) {
-                        field.setAccessible(true);
-                        field.set(bean, value);
+                        setBeanValue(field, bean.getClass(), bean, value);
                     }
                 }
-            } catch (BeansException | ClassNotFoundException | IllegalArgumentException | IllegalAccessException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+            } catch (BeansException e) {
+                logger.info("cannot get specific bean from ApplicationContext" + beanName);
             }
         }
     }
@@ -116,44 +117,207 @@ public class SpringContextConfiguration extends AbstractConfigurable {
         }
         BeanData bd = propertyMap.get(key);
         if (bd != null) {
-            Object bean = ac.getBean(bd.getBeanName());
-            if (bean != null) {
-                String fieldName = bd.getFieldName();
-                String methodName = "set" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1, fieldName.length());
-                Method method = null;
-                try {
-                    method = bean.getClass().getDeclaredMethod(methodName, new Class[] { String.class });
-                } catch (Exception e) {
-                    logger.error(e.getMessage(), e);
+            Object bean = null;
+            try {
+                bean = ac.getBean(bd.getBeanName());
+                if (bean != null) {
+                    String fieldName = bd.getFieldName();
+                    Field field = bean.getClass().getField(fieldName);
+                    setBeanValue(field, bean.getClass(), bean, value);
                 }
-                if (method == null) {
-                    Field field = null;
-                    try {
-                        field = bean.getClass().getField(fieldName);
-                    } catch (Exception e) {
-                        logger.error(e.getMessage(), e);
-                    }
-                    if (field == null) {
-                        logger.error("no field to set property:" + fieldName);
-                    } else {
-                        field.setAccessible(true);
-                        try {
-                            field.set(bean, value);
-                        } catch (Exception e) {
-                            logger.error(e.getMessage(), e);
-                        }
-                    }
-                } else {
-                    method.setAccessible(true);
-                    try {
-                        method.invoke(bean, value);
-                    } catch (Exception e) {
-                        logger.error(e.getMessage(), e);
-                    }
-                }
+            } catch (BeansException e) {
+                logger.info("cannot get specific bean from ApplicationContext" + bd.getBeanName());
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
+    }
+    
+    private String getSetterMethod(String fieldName) {
+    
+        return "set" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1, fieldName.length());
+    }
+    
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    private void setBeanValue(Field field, Class clazz, Object bean, String value) {
+    
+        if (field == null || bean == null || value == null) {
+            throw new IllegalArgumentException();
+        }
         
+        // get the real target object from proxied one
+        if (AopUtils.isAopProxy(bean) || AopUtils.isCglibProxy(bean)) {
+            bean = getTargetObject(bean);
+        }
+        
+        field.setAccessible(true);
+        String fieldName = field.getName();
+        String setter = getSetterMethod(fieldName);
+        Class type = field.getType();
+        try {
+            if (type.isPrimitive()) {
+                if (type == Boolean.TYPE) {
+                    try {
+                        Method m = clazz.getDeclaredMethod(setter, Boolean.TYPE);
+                        m.setAccessible(true);
+                        m.invoke(bean, Boolean.parseBoolean(value));
+                    } catch (Exception e) {
+                        logger.info("cannot find correspond setter method " + fieldName + ", Field.set will be tried instead.");
+                        field.set(bean, Boolean.parseBoolean(value));
+                    }
+                } else if (type == Byte.TYPE) {
+                    try {
+                        Method m = clazz.getDeclaredMethod(setter, Byte.TYPE);
+                        m.setAccessible(true);
+                        m.invoke(bean, Byte.parseByte(value));
+                    } catch (Exception e) {
+                        logger.info("cannot find correspond setter method " + fieldName + ", Field.set will be tried instead.");
+                        field.set(bean, Byte.parseByte(value));
+                    }
+                } else if (type == Character.TYPE) {
+                    try {
+                        Method m = clazz.getDeclaredMethod(setter, Character.TYPE);
+                        m.setAccessible(true);
+                        m.invoke(bean, value.charAt(0));
+                    } catch (Exception e) {
+                        logger.info("cannot find correspond setter method " + fieldName + ", Field.set will be tried instead.");
+                        field.set(bean, value.charAt(0));
+                    }
+                } else if (type == Double.TYPE) {
+                    try {
+                        Method m = clazz.getDeclaredMethod(setter, Double.TYPE);
+                        m.setAccessible(true);
+                        m.invoke(bean, Double.parseDouble(value));
+                    } catch (Exception e) {
+                        logger.info("cannot find correspond setter method " + fieldName + ", Field.set will be tried instead.");
+                        field.set(bean, Double.parseDouble(value));
+                    }
+                } else if (type == Float.TYPE) {
+                    try {
+                        Method m = clazz.getDeclaredMethod(setter, Float.TYPE);
+                        m.setAccessible(true);
+                        m.invoke(bean, Float.parseFloat(value));
+                    } catch (Exception e) {
+                        logger.info("cannot find correspond setter method " + fieldName + ", Field.set will be tried instead.");
+                        field.set(bean, Float.parseFloat(value));
+                    }
+                } else if (type == Integer.TYPE) {
+                    try {
+                        Method m = clazz.getDeclaredMethod(setter, Integer.TYPE);
+                        m.setAccessible(true);
+                        m.invoke(bean, Integer.parseInt(value));
+                    } catch (Exception e) {
+                        logger.info("cannot find correspond setter method " + fieldName + ", Field.set will be tried instead.");
+                        field.set(bean, Integer.parseInt(value));
+                    }
+                } else if (type == Long.TYPE) {
+                    try {
+                        Method m = clazz.getDeclaredMethod(setter, Long.TYPE);
+                        m.setAccessible(true);
+                        m.invoke(bean, Long.parseLong(value));
+                    } catch (Exception e) {
+                        logger.info("cannot find correspond setter method " + fieldName + ", Field.set will be tried instead.");
+                        field.set(bean, Long.parseLong(value));
+                    }
+                } else if (type == Short.TYPE) {
+                    try {
+                        Method m = clazz.getDeclaredMethod(setter, Short.TYPE);
+                        m.setAccessible(true);
+                        m.invoke(bean, Short.parseShort(value));
+                    } catch (Exception e) {
+                        logger.info("cannot find correspond setter method " + fieldName + ", Field.set will be tried instead.");
+                        field.set(bean, Short.parseShort(value));
+                    }
+                } else {
+                    throw new IllegalStateException("Unknown primitive type: " + type.getName());
+                }
+            } else if (type == Boolean.class) {
+                try {
+                    Method m = clazz.getDeclaredMethod(setter, Boolean.class);
+                    m.setAccessible(true);
+                    m.invoke(bean, Boolean.parseBoolean(value));
+                } catch (Exception e) {
+                    logger.info("cannot find correspond setter method " + fieldName + ", Field.set will be tried instead.");
+                    field.set(bean, Boolean.parseBoolean(value));
+                }
+            } else if (type == Byte.class) {
+                try {
+                    Method m = clazz.getDeclaredMethod(setter, Byte.class);
+                    m.setAccessible(true);
+                    m.invoke(bean, Byte.parseByte(value));
+                } catch (Exception e) {
+                    logger.info("cannot find correspond setter method " + fieldName + ", Field.set will be tried instead.");
+                    field.set(bean, Byte.parseByte(value));
+                }
+            } else if (type == Character.class) {
+                try {
+                    Method m = clazz.getDeclaredMethod(setter, Character.class);
+                    m.setAccessible(true);
+                    m.invoke(bean, value.charAt(0));
+                } catch (Exception e) {
+                    logger.info("cannot find correspond setter method " + fieldName + ", Field.set will be tried instead.");
+                    field.set(bean, value.charAt(0));
+                }
+            } else if (type == Double.class) {
+                try {
+                    Method m = clazz.getDeclaredMethod(setter, Double.class);
+                    m.setAccessible(true);
+                    m.invoke(bean, Double.parseDouble(value));
+                } catch (Exception e) {
+                    logger.info("cannot find correspond setter method " + fieldName + ", Field.set will be tried instead.");
+                    field.set(bean, Double.parseDouble(value));
+                }
+            } else if (type == Float.class) {
+                try {
+                    Method m = clazz.getDeclaredMethod(setter, Float.class);
+                    m.setAccessible(true);
+                    m.invoke(bean, Float.parseFloat(value));
+                } catch (Exception e) {
+                    logger.info("cannot find correspond setter method " + fieldName + ", Field.set will be tried instead.");
+                    field.set(bean, Float.parseFloat(value));
+                }
+            } else if (type == Integer.class) {
+                try {
+                    Method m = clazz.getDeclaredMethod(setter, Integer.class);
+                    m.setAccessible(true);
+                    m.invoke(bean, Integer.parseInt(value));
+                } catch (Exception e) {
+                    logger.info("cannot find correspond setter method " + fieldName + ", Field.set will be tried instead.");
+                    field.set(bean, Integer.parseInt(value));
+                }
+            } else if (type == Long.class) {
+                try {
+                    Method m = clazz.getDeclaredMethod(setter, Long.class);
+                    m.setAccessible(true);
+                    m.invoke(bean, Long.parseLong(value));
+                } catch (Exception e) {
+                    logger.info("cannot find correspond setter method " + fieldName + ", Field.set will be tried instead.");
+                    field.set(bean, Long.parseLong(value));
+                }
+            } else if (type == Short.class) {
+                try {
+                    Method m = clazz.getDeclaredMethod(setter, Short.class);
+                    m.setAccessible(true);
+                    m.invoke(bean, Short.parseShort(value));
+                } catch (Exception e) {
+                    logger.info("cannot find correspond setter method " + fieldName + ", Field.set will be tried instead.");
+                    field.set(bean, Short.parseShort(value));
+                }
+            }
+            else {
+                try {
+                    Method m = clazz.getDeclaredMethod(setter, String.class);
+                    m.setAccessible(true);
+                    m.invoke(bean, value);
+                } catch (Exception e) {
+                    logger.info("cannot find correspond setter method " + fieldName + ", Field.set will be tried instead.");
+                    field.set(bean, value);
+                }
+            }
+        } catch (IllegalArgumentException | IllegalAccessException e) {
+            logger.warn("Error when setting value by invoking Field.set(Object) " + fieldName);
+            e.printStackTrace();
+        }
     }
     
     @Override
@@ -161,5 +325,4 @@ public class SpringContextConfiguration extends AbstractConfigurable {
     
         return this.getClass().getName();
     }
-    
 }

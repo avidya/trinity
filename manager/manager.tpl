@@ -37,11 +37,21 @@
             <div class="main-wrap">
                 <div class="mainCon">
                     <h1>{{current}}</h1>
-                    <a href="/manager/{{current}}/dev">DEV</a>
-                    <a href="/manager/{{current}}/alpha">ALPHA</a>
-                    <a href="/manager/{{current}}/qa">QA</a>
-                    <a href="/manager/{{current}}/beta">BETA</a>
-                    <a href="/manager/{{current}}/product">PRODUCT</a>
+                    %if 'dev' in hosts:
+                        <a href="/manager/{{current}}/dev">DEV({{hosts['dev']}})</a>
+                    %end
+                    %if 'alpha' in hosts:
+                        <a href="/manager/{{current}}/alpha">ALPHA({{hosts['alpha']}})</a>
+                    %end
+                    %if 'qa' in hosts:
+                        <a href="/manager/{{current}}/qa">QA({{hosts['qa']}})</a>
+                    %end
+                    %if 'beta' in hosts:
+                        <a href="/manager/{{current}}/beta">BETA({{hosts['beta']}})</a>
+                    %end
+                    %if 'product' in hosts:
+                        <a href="/manager/{{current}}/product">PRODUCT({{hosts['product']}})</a>
+                    %end
                 % if 'warn' in globals():
                     <h2>{{warn}}</h2>
                 % else:

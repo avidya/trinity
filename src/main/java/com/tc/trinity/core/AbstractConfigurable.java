@@ -4,6 +4,7 @@ package com.tc.trinity.core;
 import java.util.Properties;
 
 import com.tc.trinity.core.spi.Configurable;
+import com.tc.trinity.core.spi.RemoteConfigClient;
 
 /**
  * 抽象实现。对异常进行处理 <br />
@@ -18,6 +19,8 @@ public abstract class AbstractConfigurable implements Configurable {
     
     protected ConfigContext configContext;
     
+    private boolean isProduct = false;
+    
     public void setConfigContext(ConfigContext context) {
     
         this.configContext = context;
@@ -28,10 +31,16 @@ public abstract class AbstractConfigurable implements Configurable {
         return this.configContext;
     }
     
+    protected boolean isProductEnv() {
+    
+        return this.isProduct;
+    }
+    
     @Override
     public void init(ConfigContext context, Properties properties) {
     
         this.configContext = context;
+        this.isProduct = "product".equalsIgnoreCase(properties.getProperty(RemoteConfigClient.ENVIRONMENT));
         try {
             if (!doInit(context, properties)) {
                 System.err.println("Error in initializing " + getName());
@@ -44,7 +53,6 @@ public abstract class AbstractConfigurable implements Configurable {
     @Override
     public void onChange(String key, String originalValue, String value) {
     
-        System.getProperties().put(key, value);
         try {
             if (!doOnChange(key, originalValue, value)) {
                 System.err.println("Error in doOnChange " + getName());
@@ -71,8 +79,7 @@ public abstract class AbstractConfigurable implements Configurable {
     }
     
     @Override
-    public Properties fallbackSetting() {
+    public void fallbackSetting(Properties properties) {
     
-        return null;
     }
 }

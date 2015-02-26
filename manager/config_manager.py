@@ -8,9 +8,8 @@ from kazoo.client import KazooClient
 import logging as log
 import sys
 from getopt import getopt
-from pipe import *
 
-hosts='10.1.10.215:2181'
+hosts={'dev':'10.1.10.215:2181','alpha':'10.1.10.62:2181','qa':'10.1.25.147:2181','beta':'10.1.25.5:2181','product':'172.25.12.117:2181'}
 base_path='/trinity/config/'
 log_file='/tmp/zk_opt.log'
 #log_level=log.DEBUG
@@ -74,7 +73,7 @@ def get_processor(zk, mode='restore', expand=False):
             prop_file.write(key+'='+zk.get(path+'/'+key)[0].decode('utf8') + '\n')
 
     def restore(prop_file, path):
-        lines=prop_file.readlines()
+        lines=filter(lambda l:l and len(l.strip()) > 0 and l[0] != '#', prop_file.readlines())
         # CANNOT use '=' to split config entry, since '=' is also a valid charater in value
         config=map(lambda (k,v):(k.strip(), v.strip()), map(lambda line:(line[:line.index('=')], line[line.index('=')+1:]), lines))
         config_map=dict(config)
@@ -112,7 +111,7 @@ def main():
     if params.has_key('-z'):
         hst=params['-z']
     else:
-        hst=hosts
+        hst=hosts[params['-e']]
 
     zk = KazooClient(hst)
     try:

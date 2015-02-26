@@ -24,7 +24,7 @@ public interface Configurable extends SPI {
      * 缺省设置
      *
      */
-    Properties fallbackSetting();
+    void fallbackSetting(Properties properties);
     
     /**
      * 初始化阶段的回调接口

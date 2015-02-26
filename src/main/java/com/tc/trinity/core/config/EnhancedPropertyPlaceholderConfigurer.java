@@ -67,10 +67,7 @@ public abstract class EnhancedPropertyPlaceholderConfigurer extends PropertyPlac
         try {
             Object value = props.get(placeholder);
             if (value == null) {
-                value = this.configContext.getConfigClient().getValue(placeholder);
-                if (value == null) {
-                    throw new BeanCreationException("Failed to resolve property, key: " + placeholder);
-                }
+                return this.configContext.getConfigClient().getValue(placeholder);
             }
             return value.toString();
         } catch (TrinityException e) {
@@ -129,7 +126,7 @@ public abstract class EnhancedPropertyPlaceholderConfigurer extends PropertyPlac
                 info = new ArrayList<SpringInfo>();
             }
             info.add(new SpringInfo(this.context, this.beanName, this.propertyMap));
-            this.configContext.setAttribute("spring.info", info);
+            configContext.setAttribute("spring.info", info);
         }
     }
     
@@ -137,8 +134,11 @@ public abstract class EnhancedPropertyPlaceholderConfigurer extends PropertyPlac
     public void afterPropertiesSet() throws Exception {
     
         // innerProp = this.mergeProperties();
-        this.configContext = getConfigContext();
-        externalProp = this.configContext.getConfigClient().getConfig();
+        configContext = getConfigContext();
+        if(configContext == null){
+            throw new TrinityException("No ConfigContext be set!");
+        }
+        externalProp = configContext.getConfigClient().getConfig();
     }
     
     @Override

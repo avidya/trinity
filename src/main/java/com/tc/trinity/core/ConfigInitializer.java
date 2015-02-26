@@ -13,8 +13,8 @@ import com.tc.trinity.core.spi.RemoteConfigClient;
  * <p>
  * 抽象的配置引擎初始化工作类。
  * <ul>
- * <li>1. 处理SPI的加载
- * <li>2. 回调所有的Configurable实现类的init动作
+ * <li>处理SPI的加载
+ * <li>回调所有的Configurable实现类的init动作
  * </ul>
  * 
  * @author gaofeng
@@ -31,35 +31,30 @@ public abstract class ConfigInitializer implements LifeCycle {
         try {
             // load all configurable modules from ServiceLoader
             Iterable<Configurable> configModules = ExtensionLoader.loadConfigurable();
-            Properties fallbackProps = new Properties();
+            
+            Properties globalProperties = mergeProperties();
             // especially useful for LOG module
             for (Configurable configurable : configModules) {
-                Properties p = configurable.fallbackSetting();
-                if (p != null) {
-                    fallbackProps.putAll(p);
-                }
-            }
-            Properties properties = mergeProperties();
-            for (Object tmpKey : fallbackProps.keySet()) {
-                properties.remove(tmpKey);
+                configurable.fallbackSetting(globalProperties);
             }
             
-            this.configClient = initConfigClient(context, properties);
+            this.configClient = initConfigClient(context, globalProperties);
             context.setConfigClient(this.configClient);
             Properties remoteProperties = this.configClient.getConfig();
             
             // override remote settings with local settings(properties defined in config.properties or specified by -D
             // option)
-            Object env = properties.get(RemoteConfigClient.ENVIRONMENT);
-            if(env == null || !"product".equalsIgnoreCase(env.toString())){
-                remoteProperties.putAll(properties);
+            Object env = globalProperties.get(RemoteConfigClient.ENVIRONMENT);
+            // 对product的环境，排除本地配置覆盖
+            if (env == null || !"product".equalsIgnoreCase(env.toString())) {
+                remoteProperties.putAll(globalProperties);
             }
-            
+            globalProperties = remoteProperties;
             
             for (Configurable configModule : configModules) {
                 
                 if (configModule.checkValidity()) {
-                    configModule.init(context, remoteProperties);
+                    configModule.init(context, globalProperties);
                     context.register(configModule);
                 } else {
                     System.err.println(configModule + " is not valid, and won't be registered.");
@@ -87,7 +82,15 @@ public abstract class ConfigInitializer implements LifeCycle {
         return this.configClient;
     }
     
-    protected Properties mergeProperties() {
+    /**
+     * 合并配置信息
+     * <p>
+     * 优先级：-D参数指定的配置 ==覆盖=> config.properties中的配置
+     *
+     * @return
+     * @throws TrinityException
+     */
+    protected Properties mergeProperties() throws TrinityException {
     
         Properties properties = new Properties();
         InputStream inputStream = this.getClass().getResourceAsStream(Constants.CONFIG_FILE);
@@ -101,9 +104,10 @@ public abstract class ConfigInitializer implements LifeCycle {
             }
             
         } else {
-            System.err.println("trinity - 'config.properties' was not found. ");
+            String errMsg = "trinity - 'config.properties' was not found. ";
+            throw new TrinityException(errMsg);
         }
-        // load JVM parameters specified by -D option, and override settings defined in config.properties
+        
         properties.putAll(System.getProperties());
         return properties;
     }

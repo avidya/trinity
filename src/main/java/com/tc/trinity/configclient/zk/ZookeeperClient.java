@@ -158,7 +158,7 @@ public class ZookeeperClient extends AbstractRemoteConfigClient implements Watch
                 String pn = prop.getProperty(PROJECT_NAME);
                 String env = prop.getProperty(ENVIRONMENT);
                 if (StringUtils.isEmpty(servers) || StringUtils.isEmpty(pn) || StringUtils.isEmpty(env)) {
-                    throw new TrinityException("Wrong Configuration!");
+                    throw new TrinityException("Wrong Configuration! - check trinity.config.project_name, trinity.config.environment and trinity.remote.zookeeper.servers settings.");
                 }
                 this.contextPath = normalize(pn) + "/" + normalize(env);
                 if (StringUtils.isNotEmpty(prop.getProperty(PROJECT_VERSION))) {
@@ -166,7 +166,7 @@ public class ZookeeperClient extends AbstractRemoteConfigClient implements Watch
                 }
                 zk = new ZooKeeper(this.servers, this.sessionTimeout, this);
             } catch (NumberFormatException e) {
-                throw new TrinityException("Wrong Configuration!", e);
+                throw new TrinityException("Wrong Configuration! - check trinity.remote.zookeeper.session_timeout settings", e);
             } catch (IOException e) {
                 throw new TrinityException("Error in connecting to Zookeeper", e);
             }
